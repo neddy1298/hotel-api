@@ -39,5 +39,12 @@
         </div>
         <a class="btn btn-outline-primary mb-5 mt-3" href="{{ url_for('api.posts')}}">See API In Full Page</a>
     </div>
+    <div>
+        <h3>Transaksis API</h3>
+        <div class="embed-responsive embed-responsive-21by9">
+            <iframe class="embed-responsive-item" src="{{ url_for('api.transaksis') }}"></iframe>
+        </div>
+        <a class="btn btn-outline-primary mb-5 mt-3" href="{{ url_for('api.transaksis')}}">See API In Full Page</a>
+    </div>
 </div>
 {% endblock content %}

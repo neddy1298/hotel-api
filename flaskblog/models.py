@@ -69,6 +69,28 @@ class Kamar(db.Model):
     fasilitas = db.Column(db.String(60), nullable=False)
     stok = db.Column(db.Integer, nullable=False)
 
+class Transaksi(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(200), nullable=False)
+    kamar = db.Column(db.String(20), nullable=False)
+    harga = db.Column(db.Integer, nullable=False)
+    start_from = db.Column(db.String(25), nullable=False)
+    hari = db.Column(db.Integer, nullable=False)
+    phone = db.Column(db.String(25), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    total = db.Column(db.Integer, nullable=False)
+    def __init__(self, user, kamar, harga, start_from, hari, phone, email, total):
+        self.user = user
+        self.kamar = kamar
+        self.kamar = kamar
+        self.harga = harga
+        self.start_from = start_from
+        self.hari = hari
+        self.phone = phone
+        self.phone = phone
+        self.email = email
+        self.total = total
+
 class UserSchema(ma.Schema):
     class Meta:
         fields=('id','username','email','image_file','password')
@@ -88,3 +110,8 @@ class HotelSchema(ma.Schema):
 class KamarSchema(ma.Schema):
     class Meta:
         fields=('id','nama','harga','image_file','fasilitas','stok')
+
+
+class TransaksiSchema(ma.Schema):
+    class Meta:
+        fields=('id','user','kamar','harga','start_from','hari','phone','email','total')

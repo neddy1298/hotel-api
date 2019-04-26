@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flaskblog.models import Post, User, UserSchema, PostSchema, MenuSchema, HotelSchema, KamarSchema, Hotel, Kamar, Menu
+from flaskblog.models import Post, User, Menu,  Hotel, Kamar, Transaksi, UserSchema, PostSchema, MenuSchema, HotelSchema, KamarSchema, TransaksiSchema, db, ma
 from flask_login import login_required, current_user
 
 api = Blueprint('api', __name__)
@@ -13,6 +13,8 @@ users_schema = UserSchema(many=True, strict=True)
 user_schema = UserSchema(strict=True)
 posts_schema = PostSchema(many=True, strict=True)
 post_schema = PostSchema(strict=True)
+transaksis_schema = TransaksiSchema(many=True, strict=True)
+transaksi_schema = TransaksiSchema(strict=True)
 
 
 ########################################################################
@@ -64,6 +66,17 @@ def post(user_id):
 def posts():
 	all_post = Post.query.all()
 	result = posts_schema.dump(all_post)
+	return jsonify(result.data)
+
+@api.route("/api/transaksi/<id>", methods=['GET'])
+def transaksi(id):
+	transaksi = Transaksi.query.get(id)
+	return transaksi_schema.jsonify(transaksi)
+
+@api.route("/api/transaksi/all", methods=['GET'])
+def transaksis():
+	all_transaksi = Transaksi.query.all()
+	result = transaksis_schema.dump(all_transaksi)
 	return jsonify(result.data)
 
 ########################################################################
@@ -138,6 +151,24 @@ def add_post():
 	db.session.commit()
 
 	return post_schema.jsonify(new_post)
+
+@api.route('/api/transaksi/add', methods=['POST'])
+def add_transaksi():
+	user = request.json['user']
+	kamar = request.json['kamar']
+	harga = request.json['harga']
+	start_from = request.json['start_from']
+	hari = request.json['hari']
+	phone = request.json['phone']
+	email = request.json['email']
+	total = request.json['total']
+
+	new_transaksi = Transaksi(user, kamar, harga, start_from, hari, phone, email, total)
+
+	db.session.add(new_transaksi)
+	db.session.commit()
+
+	return transaksi_schema.jsonify(new_transaksi)
 
 
 ########################################################################
