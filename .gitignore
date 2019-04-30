@@ -1,1 +1,3 @@
 .ssh
+.vscode
+flaskblog/__pycache__
