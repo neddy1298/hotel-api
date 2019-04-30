@@ -152,7 +152,7 @@ def add_post():
 
 	return post_schema.jsonify(new_post)
 
-@api.route('/api/transaksi/add?token=asdj982yh89zxc9vqbq-nfuu1akxvopqwnc71684526v8cbjhqagwoldhf', methods=['POST'])
+@api.route('/api/transaksi/add', methods=['POST'])
 def add_transaksi():
 	user = request.json['user']
 	kamar = request.json['kamar']
