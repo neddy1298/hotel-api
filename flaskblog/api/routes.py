@@ -3,18 +3,18 @@ from flaskblog.models import Post, User, Menu,  Hotel, Kamar, Transaksi, UserSch
 from flask_login import login_required, current_user
 
 api = Blueprint('api', __name__)
-menus_schema = MenuSchema(many=True, strict=True)
 menu_schema = MenuSchema(strict=True)
-kamars_schema = KamarSchema(many=True, strict=True)
+menus_schema = MenuSchema(many=True, strict=True)
 kamar_schema = KamarSchema(strict=True)
-hotels_schema = HotelSchema(many=True, strict=True)
+kamars_schema = KamarSchema(many=True, strict=True)
 hotel_schema = HotelSchema(strict=True)
-users_schema = UserSchema(many=True, strict=True)
+hotels_schema = HotelSchema(many=True, strict=True)
 user_schema = UserSchema(strict=True)
-posts_schema = PostSchema(many=True, strict=True)
+users_schema = UserSchema(many=True, strict=True)
 post_schema = PostSchema(strict=True)
-transaksis_schema = TransaksiSchema(many=True, strict=True)
+posts_schema = PostSchema(many=True, strict=True)
 transaksi_schema = TransaksiSchema(strict=True)
+transaksis_schema = TransaksiSchema(many=True, strict=True)
 
 
 ########################################################################
@@ -260,6 +260,31 @@ def edit_post(id):
 
 	return post_schema.jsonify(post)
 
+@api.route('/api/transaksi/edit/<id>', methods=['PUT'])
+def edit_transaksi(id):
+	transaksi = Transaksi.query.get(id)
+	user = request.json['user']
+	kamar = request.json['kamar']
+	harga = request.json['harga']
+	start_from = request.json['start_from']
+	hari = request.json['hari']
+	phone = request.json['phone']
+	email = request.json['email']
+	total = request.json['total']
+
+	transaksi.user = user
+	transaksi.kamar = kamar
+	transaksi.harga = harga
+	transaksi.start_from = start_from
+	transaksi.hari = hari
+	transaksi.phone = phone
+	transaksi.email = email
+	transaksi.total = total
+
+	db.session.commit()
+
+	return transaksi_schema.jsonify(transaksi)
+
 ########################################################################
 ########################## D E L E T E #################################
 ########################################################################
@@ -303,3 +328,11 @@ def delete_post(id):
 	db.session.commit()
 
 	return post_schema.jsonify(post)
+
+@api.route('/api/transaksi/delete/<id>', methods=['DELETE'])
+def delete_transaksi(id):
+	transaksi = Transaksi.query.get(id)
+	db.session.delete(transaksi)
+	db.session.commit()
+
+	return transaksi_schema.jsonify(transaksi)
